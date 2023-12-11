@@ -7,11 +7,19 @@ from matplotlib import pyplot as plt
 
 
 def loadImageSet(add):
-    filenames = glob.glob('face/pgm/*.pgm')
+    filenames = glob.glob('face/pgm/*.pgm') # 匹配指定路径下的所有以 .pgm 结尾的文件，并将文件路径存储在 filenames 列表中
     filenames.sort()
-    img = [Image.open(fn).convert('L').resize((98, 116)) for fn in filenames]
-    FaceMat = np.asarray([np.array(im).flatten() for im in img])
-    return FaceMat
+    # 使用 PIL 库中的 Image.open 函数打开每个文件
+    # 并将图像转换为灰度（convert 函数，参数 L 表示灰度）
+    # 然后调整图像大小为(98, 116)像素（resize 函数）
+    # 将每个处理过的图像对象存储在 images 列表中。
+    images = [Image.open(fn).convert('L').resize((98, 116)) for fn in filenames]
+    # 先将每个 PIL 图像对象 img 转换为 NumPy 数组 (np.array(img))
+    # 然后将每个数组转换为一维向量 (np.array(img).flatten())
+    # 最后将所有向量存储在一个矩阵中 (np.asarray([np.array(img).flatten() for img in images]))
+    faces = np.asarray([np.array(img).flatten() for img in images])
+
+    return faces
 
 
 def recogInitVector(selecthr=0.8):
